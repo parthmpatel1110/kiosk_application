@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>View Feedback</title>
+    <style>
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            margin-bottom: 50px;
+            background-color: #ffffff; 
+            font-size: 23px;
+        }
+
+        .new-line {
+            margin-top: 15px;
+            text-align: center /* Center the button horizontally */
+        }
+
+        .new-line button {
+            font-size: 18px; /* Increase the font size */
+            padding: 10px 100px; /* Adjust padding for height and width */
+        }
+        /* .chartContainer{
+            text-align: center;
+        }
+
+        canvas{
+            /* width: 80% !important; */
+            /* height: 700px !important; */
+            margin: 0 auto;
+        } */
+
+    </style>
+    
+    
+</head>
+<body>
+    <h1>View Feedback</h1>
+    
+    <div style="height: 50vh; width: 50%;">
+        <canvas id="food"></canvas>
+    </div>
+
+    <div style="height: 50vh; width: 50%;">
+        <canvas id="cleaniness"></canvas>
+    </div>
+
+    <div style="height: 50vh; width: 50%;">
+        <canvas id="servies"></canvas>
+    </div>
+
+    <form action="/download_feedback_csv" method="get">
+        <div class="new-line">
+            <button type="submit">Download CSV</button>
+        </div>
+    </form>
+
+    <script>
+        const labels = {{ labels | tojson}};
+    
+        const fooddata = {
+            labels: labels,
+            datasets: [{
+                label: "FOOD",
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ fooddata | tojson}},
+            }]
+        };
+
+        const cleaninessdata = {
+            labels: labels,
+            datasets: [{
+                label: "CLEANINESS",
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ cleaninessdata | tojson}},
+            }]
+        };
+
+        const servicedata = {
+            labels: labels,
+            datasets: [{
+                label: "SEVICE",
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ servicedata | tojson}},
+            }]
+        };
+    
+        const config = {
+            type: 'bar',
+            data: fooddata,
+            options: { maintainAspectRatio: false }
+        };
+    
+        const food = new Chart(
+            document.getElementById('food'),
+            config
+        );
+        
+        const config1 = {
+            type: 'bar',
+            data: cleaninessdata,
+            options: { maintainAspectRatio: false }
+        };
+    
+        const cleaniness = new Chart(
+            document.getElementById('cleaniness'),
+            config1
+        );
+        
+        const config2 = {
+            type: 'bar',
+            data: servicedata,
+            options: { maintainAspectRatio: false }
+        };
+    
+        const servies = new Chart(
+            document.getElementById('servies'),
+            config2
+        );
+
+    </script>
+</body>
+</html>

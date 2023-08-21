@@ -1,0 +1,45 @@
+body {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    margin-bottom: 50px;
+    background-color: #75a372; /* Replace with your desired background color */
+}
+/* Style the label elements as radio buttons */
+.radio-label {
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+    border: 0px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Hide the actual radio inputs */
+.radio-input {
+    display: none;
+}
+
+/* Add styles to the selected radio label */
+.radio-label.selected {
+    border-color: #007bff;
+    background-color: #f0f0f0;
+}
+
+.new-line {
+    margin-top: 15px;
+    text-align: center; /* Center the button horizontally */
+}
+
+.new-line input[type="submit"] {
+    font-size: 18px; /* Increase the font size */
+    padding: 10px 20px; /* Adjust padding for height and width */
+}
+
+input[type="text"][name="mobile_number"] {
+    width: 20%; /* Adjust the width as needed */
+    padding: 10px; /* Add padding for better spacing */
+    font-size: 16px; /* Adjust the font size as needed */
+    text-align: center;
+}

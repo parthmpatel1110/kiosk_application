@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Feedback</title>
+    <style>
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            margin-bottom: 50px;
+            background-color: #75a372; /* Replace with your desired background color */
+        }
+        /* Style the label elements as radio buttons */
+        .radio-label {
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+            border: 0px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        /* Hide the actual radio inputs */
+        .radio-input {
+            display: none;
+        }
+
+        /* Add styles to the selected radio label */
+        .radio-label.selected {
+            border-color: #007bff;
+            background-color: #f0f0f0;
+        }
+
+        .new-line {
+            margin-top: 15px;
+            text-align: center; /* Center the button horizontally */
+        }
+
+        .new-line input[type="submit"] {
+            font-size: 18px; /* Increase the font size */
+            padding: 10px 20px; /* Adjust padding for height and width */
+        }
+
+        input[type="text"][name="mobile_number"] {
+            width: 20%; /* Adjust the width as needed */
+            padding: 10px; /* Add padding for better spacing */
+            font-size: 16px; /* Adjust the font size as needed */
+            text-align: center;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            const radioGroups = document.querySelectorAll('.radio-group');
+            const form = document.forms[0];
+
+            radioGroups.forEach(group => {
+                const radioLabels = group.querySelectorAll('.radio-label');
+                const radioInputs = group.querySelectorAll('.radio-input');
+
+                radioLabels.forEach(label => {
+                    const input = label.querySelector('.radio-input');
+                    const image = label.querySelector('img');
+
+                    label.addEventListener('click', () => {
+                        input.checked = true;
+                        radioLabels.forEach(lbl => lbl.classList.remove('selected'));
+                        label.classList.add('selected');
+                        checkAllSelected();
+                    });
+
+                    input.addEventListener('change', () => {
+                        if (input.checked) {
+                            radioLabels.forEach(lbl => lbl.classList.remove('selected'));
+                            label.classList.add('selected');
+                            checkAllSelected();
+                        }
+                    });
+                });
+            });
+        
+            function checkAllSelected() {
+                const allSelected = Array.from(radioGroups).every(group => {
+                    const selectedInput = group.querySelector('.radio-input:checked');
+                    return selectedInput !== null;
+                });
+
+                if (allSelected && form.mobile_number.value !== "") {
+                    if (!/^[0-9]{10}$/.test(form.mobile_number.value)) {
+                        errorMessage.textContent = "Please provide a valid 10-digit mobile number.";
+                    } else {
+                        errorMessage.textContent = "";
+                        form.submit();
+                    }
+                }
+            }
+
+            function autoSubmit() {
+                if ( Array.from(radioGroups).every(group => group.querySelector('.radio-input:checked') !== null)) {
+                    if(form.mobile_number.value !== "" && /^[0-9]{10}$/.test(form.mobile_number.value)){
+                        form.submit();
+                    }
+                }
+            }
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+            });
+
+            setInterval(autoSubmit, 2000); // Check every 1 second
+        
+        };
+
+    </script>
+</head>
+<body>
+    <h1>Welcome to Customer Feedback</h1>
+    <form action="/submit_feedback" method="post">
+        <h2>Mobile Number (10 digits)</h2>
+        <input type="text" name="mobile_number" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number" required>
+        <p id="error-message" style="color: red;"></p>
+        <div class="radio-group">
+            <h1>FOOD</h1>
+            <label class="radio-label">
+                <input type="radio" class="radio-input" name="food" value="thumbs_up">
+                <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up">
+            </label>
+            <label class="radio-label">
+                <input type="radio" class="radio-input" name="food" value="thumbs_down">
+                <img src="{{ url_for('static', filename='thumbs_down.png') }}" alt="Thumbs Down">
+            </label>
+        </div>
+        
+        <div class="radio-group">
+            <h1>CLEANLINESS</h1>
+            <label class="radio-label">
+                <input type="radio" class="radio-input" name="cleanliness" value="thumbs_up">
+                <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up">
+            </label>
+            <label class="radio-label">
+                <input type="radio" class="radio-input" name="cleanliness" value="thumbs_down">
+                <img src="{{ url_for('static', filename='thumbs_down.png') }}" alt="Thumbs Down">
+            </label>
+        </div>
+        
+        <div class="radio-group">
+            <h1>SERVICE</h1>
+            <label class="radio-label">
+                <input type="radio" class="radio-input" name="service" value="thumbs_up">
+                <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up">
+            </label>
+            <label class="radio-label">
+                <input type="radio" class="radio-input" name="service" value="thumbs_down">
+                <img src="{{ url_for('static', filename='thumbs_down.png') }}" alt="Thumbs Down">
+            </label>
+        </div>
+        
+        <div class="new-line">
+            <input type="submit" value="Submit Feedback">
+        </div>
+    </form>
+</body>
+</html>

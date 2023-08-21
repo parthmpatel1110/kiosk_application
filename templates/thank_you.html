@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thank You</title>
+    <style>
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            min-height: 100vh;
+            background-color: #75a372;
+        }
+
+        /* Style the back link */
+        .back-link {
+            margin-top: 20px;
+            color: #eef0f3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        h1 {
+            font-size: 40px; /* Adjust the size as needed */
+        }
+
+        h2 {
+            font-size: 35px; /* Adjust the size as needed */
+        }
+
+        p {
+            font-size: 20px; /* Adjust the size as needed */
+        }
+
+    </style>
+    <script>
+        setTimeout(function() {
+            window.location.href = '/';
+        }, 2500);
+    </script>
+</head>
+<body>
+    <div class="center-container">
+        <h1>Thank You for Your Feedback!</h1>
+        <p>Your feedback has been submitted successfully.</p>
+        <a href="/" class="back-link">Go Back to Home</a>
+    </div>
+</body>
+</html>
