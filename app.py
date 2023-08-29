@@ -14,6 +14,7 @@ passwordDict = {"patel" : "patel"}
 
 
 def savedata(feedback_data):
+    # print(feedback_data)
     if os.path.exists('feedback_data.pkl'):
         with open('feedback_data.pkl', 'rb') as fp:
             filedata = pickle.load(fp)
@@ -46,12 +47,13 @@ def index():
 
 @app.route('/submit_feedback', methods=['POST'])
 def submit_feedback():
+    # global feedback_data
     food = request.form.get('food')
-    print("food=", food)
     cleanliness = request.form.get('cleanliness')
     service = request.form.get('service')
     mobile_number = request.form.get('mobile_number')
-    feedback_data.pop(mobile_number, None)
+    # print("mobile number =", mobile_number)
+    # feedback_data.pop(mobile_number, None)
     feedback_data[mobile_number] = [mobile_number,datetime.now().strftime('%Y-%m-%d %H:%M:%S') ,  food, cleanliness, service]
     savedata(feedback_data)
     return render_template('thank_you.html')
