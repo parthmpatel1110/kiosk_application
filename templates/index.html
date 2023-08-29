@@ -30,7 +30,7 @@
         /* Add styles to the selected radio label */
         .radio-label.selected {
             border-color: #007bff;
-            background-color: #f0f0f0;
+            background-color: #868282;
         }
 
         .new-line {
@@ -43,14 +43,80 @@
             padding: 10px 20px; /* Adjust padding for height and width */
         }
 
-        input[type="text"][name="mobile_number"] {
-            width: 15%; /* Adjust the width as needed */
-            padding: 5px; /* Add padding for better spacing */
-            font-size: 16px; /* Adjust the font size as needed */
+        .form-container {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style headings */
+        .title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        
+        h1 {
+            font-size: 20px; /* Adjust the size as needed */
+        }
+
+        .radio-group h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* Style input container */
+        .input-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-container label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .input-container input {
+            width: 30%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             text-align: center;
         }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Style submit container */
+        .submit-container {
+            margin-top: 20px;
+        }
+
+        .submit-container input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+    /* ... (your other styles) ... */
+
     </style>
     <script>
+
         window.onload = function () {
             const radioGroups = document.querySelectorAll('.radio-group');
             const form = document.forms[0];
@@ -109,56 +175,62 @@
             });
 
             setInterval(autoSubmit, 2000); // Check every 1 second
+
+
         
         };
 
     </script>
 </head>
 <body>
-    <h1>Welcome to Customer Feedback</h1>
-    <form action="/submit_feedback" method="post">
-        <h2>Mobile Number (10 digits)</h2>
-        <input type="text" name="mobile_number" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number" required>
-        <p id="error-message" style="color: red;"></p>
-        <div class="radio-group">
-            <h1>FOOD</h1>
-            <label class="radio-label">
-                <input type="radio" class="radio-input" name="food" value="thumbs_up">
-                <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up">
-            </label>
-            <label class="radio-label">
-                <input type="radio" class="radio-input" name="food" value="thumbs_down">
-                <img src="{{ url_for('static', filename='thumbs_down.png') }}" alt="Thumbs Down">
-            </label>
-        </div>
-        
-        <div class="radio-group">
-            <h1>CLEANLINESS</h1>
-            <label class="radio-label">
-                <input type="radio" class="radio-input" name="cleanliness" value="thumbs_up">
-                <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up">
-            </label>
-            <label class="radio-label">
-                <input type="radio" class="radio-input" name="cleanliness" value="thumbs_down">
-                <img src="{{ url_for('static', filename='thumbs_down.png') }}" alt="Thumbs Down">
-            </label>
-        </div>
-        
-        <div class="radio-group">
-            <h1>SERVICE</h1>
-            <label class="radio-label">
-                <input type="radio" class="radio-input" name="service" value="thumbs_up">
-                <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up">
-            </label>
-            <label class="radio-label">
-                <input type="radio" class="radio-input" name="service" value="thumbs_down">
-                <img src="{{ url_for('static', filename='thumbs_down.png') }}" alt="Thumbs Down">
-            </label>
-        </div>
-        
-        <div class="new-line">
-            <input type="submit" value="Submit Feedback">
-        </div>
-    </form>
+    <div class="form-container">
+        <h1 class="title">Welcome to Customer Feedback</h1>
+        <form id="feedback-form" action="/submit_feedback" method="post">
+            <div class="input-container">
+                <label for="mobile_number">Mobile Number (10 digits)</label>
+                <input type="text" id="mobile_number" name="mobile_number" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number" required>
+                <p class="error-message" id="error-message"></p>
+            </div>
+            <div class="radio-group">
+                <h1>FOOD</h1>
+                <label class="radio-label">
+                    <input type="radio" class="radio-input" name="food" value="thumbs_up">
+                    <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up">
+                </label>
+                <label class="radio-label">
+                    <input type="radio" class="radio-input" name="food" value="thumbs_down">
+                    <img src="{{ url_for('static', filename='thumbs_down.png') }}" alt="Thumbs Down">
+                </label>
+            </div>
+            
+            <div class="radio-group">
+                <h1>CLEANLINESS</h1>
+                <label class="radio-label">
+                    <input type="radio" class="radio-input" name="cleanliness" value="thumbs_up">
+                    <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up">
+                </label>
+                <label class="radio-label">
+                    <input type="radio" class="radio-input" name="cleanliness" value="thumbs_down">
+                    <img src="{{ url_for('static', filename='thumbs_down.png') }}" alt="Thumbs Down">
+                </label>
+            </div>
+            
+            <div class="radio-group">
+                <h1>SERVICE</h1>
+                <label class="radio-label">
+                    <input type="radio" class="radio-input" name="service" value="thumbs_up">
+                    <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up">
+                </label>
+                <label class="radio-label">
+                    <input type="radio" class="radio-input" name="service" value="thumbs_down">
+                    <img src="{{ url_for('static', filename='thumbs_down.png') }}" alt="Thumbs Down">
+                </label>
+            </div>
+            
+            <div class="submit-container">
+                <input type="submit" value="Submit Feedback">
+            </div>
+        </form>
+    </div>
 </body>
 </html>
