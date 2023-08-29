@@ -86,7 +86,7 @@
             width: 30%;
             padding: 10px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: 2px solid #ccc;
             border-radius: 5px;
             text-align: center;
         }
@@ -117,68 +117,92 @@
     </style>
     <script>
 
-        window.onload = function () {
-            const radioGroups = document.querySelectorAll('.radio-group');
-            const form = document.forms[0];
+    window.onload = function () {
+        const radioGroups = document.querySelectorAll('.radio-group');
+        const form = document.forms[0];
+        const errorMessage = document.getElementById('error-message');
+        
+        const thumbsUpInputs = document.querySelectorAll('input[value="thumbs_up"]');
+        
+        const thumbsDownInputs = document.querySelectorAll('input[value="thumbs_down"]');
+        thumbsDownInputs.forEach(input => {
+            input.disabled = true;
+        });
+        
+        thumbsUpInputs.forEach(input => {
+            input.disabled = true;
+        });
 
-            radioGroups.forEach(group => {
-                const radioLabels = group.querySelectorAll('.radio-label');
-                const radioInputs = group.querySelectorAll('.radio-input');
 
-                radioLabels.forEach(label => {
-                    const input = label.querySelector('.radio-input');
-                    const image = label.querySelector('img');
+        radioGroups.forEach(group => {
+            const radioLabels = group.querySelectorAll('.radio-label');
+            const radioInputs = group.querySelectorAll('.radio-input');
 
-                    label.addEventListener('click', () => {
+            radioLabels.forEach(label => {
+                const input = label.querySelector('.radio-input');
+                const image = label.querySelector('img');
+
+                label.addEventListener('click', () => {
+                    if (form.mobile_number.value === "") {
+                        errorMessage.textContent = "Please provide your mobile number first.";
+                    } else {
                         input.checked = true;
                         radioLabels.forEach(lbl => lbl.classList.remove('selected'));
                         label.classList.add('selected');
-                        checkAllSelected();
-                    });
-
-                    input.addEventListener('change', () => {
-                        if (input.checked) {
-                            radioLabels.forEach(lbl => lbl.classList.remove('selected'));
-                            label.classList.add('selected');
-                            checkAllSelected();
-                        }
-                    });
-                });
-            });
-        
-            function checkAllSelected() {
-                const allSelected = Array.from(radioGroups).every(group => {
-                    const selectedInput = group.querySelector('.radio-input:checked');
-                    return selectedInput !== null;
-                });
-
-                if (allSelected && form.mobile_number.value !== "") {
-                    if (!/^[0-9]{10}$/.test(form.mobile_number.value)) {
-                        errorMessage.textContent = "Please provide a valid 10-digit mobile number.";
-                    } else {
                         errorMessage.textContent = "";
-                        form.submit();
+                        thumbsUpInputs.forEach(input => {
+                            input.disabled = false;
+                        });
+                        thumbsDownInputs.forEach(input => {
+                            input.disabled = false;
+                        });
+                        checkAllSelected();
                     }
-                }
-            }
+                });
 
-            function autoSubmit() {
-                if ( Array.from(radioGroups).every(group => group.querySelector('.radio-input:checked') !== null)) {
-                    if(form.mobile_number.value !== "" && /^[0-9]{10}$/.test(form.mobile_number.value)){
-                        form.submit();
+                input.addEventListener('change', () => {
+                    if (input.checked) {
+                        radioLabels.forEach(lbl => lbl.classList.remove('selected'));
+                        label.classList.add('selected');
+                        checkAllSelected();
                     }
-                }
-            }
+                });
+            });
+        });
 
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
+        function checkAllSelected() {
+            const allSelected = Array.from(radioGroups).every(group => {
+                const selectedInput = group.querySelector('.radio-input:checked');
+                return selectedInput !== null;
             });
 
-            setInterval(autoSubmit, 2000); // Check every 1 second
-
+            if (allSelected && form.mobile_number.value !== "") {
+                if (!/^[0-9]{10}$/.test(form.mobile_number.value)) {
+                    errorMessage.textContent = "Please provide a valid 10-digit mobile number.";
+                } else {
+                    errorMessage.textContent = "";
+                    form.submit();
+                }
+            }
+        }
 
         
-        };
+
+        function autoSubmit() {
+            if (Array.from(radioGroups).every(group => group.querySelector('.radio-input:checked') !== null)) {
+                if (form.mobile_number.value !== "" && /^[0-9]{10}$/.test(form.mobile_number.value)) {
+                    form.submit();
+                }
+            }
+        }
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+        });
+
+        setInterval(autoSubmit, 2000); // Check every 2 seconds
+    };
+
 
     </script>
 </head>
@@ -188,7 +212,7 @@
         <form id="feedback-form" action="/submit_feedback" method="post">
             <div class="input-container">
                 <label for="mobile_number">Mobile Number (10 digits)</label>
-                <input type="text" id="mobile_number" name="mobile_number" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number" required>
+                <input type="text" id="mobile_number" name="mobile_number_123" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number" required autocomplete="off">
                 <p class="error-message" id="error-message"></p>
             </div>
             <div class="radio-group">
