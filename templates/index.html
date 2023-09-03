@@ -9,7 +9,7 @@
             padding: 0;
             font-family: Arial, sans-serif;
             margin-bottom: 50px;
-            background-color: #b9b2b6; /* Replace with your desired background color */
+            background-color: #807b7e; /* Replace with your desired background color */
         }
         /* Style the label elements as radio buttons */
         .radio-label {
@@ -20,6 +20,11 @@
             padding: 5px;
             border-radius: 5px;
             width: 200px;
+        }
+
+        .radio-label img {
+            width: 100px;
+            height: 100px;
         }
 
         /* Hide the actual radio inputs */
@@ -50,7 +55,7 @@
             padding: 30px;
             border: 1px solid #ccc;
             border-radius: 10px;
-            background-color: #fff;
+            background-color: #d7d3ed;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -219,7 +224,7 @@
                 <h1>FOOD</h1>
                 <label class="radio-label">
                     <input type="radio" class="radio-input" name="food" value="thumbs_up">
-                    <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up">
+                    <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up" >
                 </label>
                 <label class="radio-label">
                     <input type="radio" class="radio-input" name="food" value="thumbs_down">
