@@ -148,8 +148,8 @@
                 const image = label.querySelector('img');
 
                 label.addEventListener('click', () => {
-                    if (form.mobile_number.value === "" || !/^[0-9]{10}$/.test(form.mobile_number.value)) {
-                        errorMessage.textContent = "Please provide your mobile number first.";
+                    if (form.mobile_number.value === "" || !/^[0-9]{10}$/.test(form.mobile_number.value) || form.mobile_number.value[0] < 5) {
+                        errorMessage.textContent = "Please provide a valid 10-digit mobile number.";
                     } else {
                         input.checked = true;
                         radioLabels.forEach(lbl => lbl.classList.remove('selected'));
@@ -182,12 +182,9 @@
             });
 
             if (allSelected && form.mobile_number.value !== "") {
-                if (!/^[0-9]{10}$/.test(form.mobile_number.value)) {
+                if (!/^[0-9]{10}$/.test(form.mobile_number.value) || form.mobile_number.value[0] < 5) {
                     errorMessage.textContent = "Please provide a valid 10-digit mobile number.";
-                } else {
-                    errorMessage.textContent = "";
-                    form.submit();
-                }
+                } 
             }
         }
 
@@ -195,7 +192,7 @@
 
         function autoSubmit() {
             if (Array.from(radioGroups).every(group => group.querySelector('.radio-input:checked') !== null)) {
-                if (form.mobile_number.value !== "" && /^[0-9]{10}$/.test(form.mobile_number.value)) {
+                if (form.mobile_number.value !== "" && /^[0-9]{10}$/.test(form.mobile_number.value) || form.mobile_number.value[0] < 5) {
                     form.submit();
                 }
             }
@@ -205,7 +202,7 @@
             event.preventDefault();
         });
 
-        setInterval(autoSubmit, 2000); // Check every 2 seconds
+        setInterval(autoSubmit, 8000); // Check every 2 seconds
     };
 
 
