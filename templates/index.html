@@ -10,6 +10,7 @@
             font-family: Arial, sans-serif;
             margin-bottom: 50px;
             background-color: #807b7e; /* Replace with your desired background color */
+            font-family: 'Times New Roman';
         }
         /* Style the label elements as radio buttons */
         .radio-label {
@@ -20,6 +21,7 @@
             padding: 5px;
             border-radius: 5px;
             width: 200px;
+            margin-right: 10px; /* Add spacing between elements */
         }
 
         .radio-label img {
@@ -50,7 +52,7 @@
 
         .form-container {
             text-align: center;
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 30px;
             border: 1px solid #ccc;
@@ -61,30 +63,39 @@
 
         /* Style headings */
         .title {
-            font-size: 24px;
+            font-size: 32px;
             margin-bottom: 20px;
         }
 
         
         h1 {
             font-size: 20px; /* Adjust the size as needed */
+            
         }
 
-        .radio-group h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
+        .radio-group {
+            display: flex;
+            align-items: center; /* Align items vertically in the center */
         }
 
+        .radio-group h1 {
+            width: 40%;
+            text-align: left;
+            font-family: 'Times New Roman';
+        }
+       
         /* Style input container */
         .input-container {
+            display: flex;
+            align-items: center; /* Align items vertically in the center */
             text-align: center;
             margin-bottom: 20px;
         }
 
-        .input-container label {
-            display: block;
-            font-size: 18px;
+        .input-container h1 {
+            text-align: left;
             margin-bottom: 5px;
+            width: 50%;
         }
 
         .input-container input {
@@ -98,7 +109,7 @@
 
         .error-message {
             color: red;
-            font-size: 14px;
+            font-size: 16px;
             margin-top: 5px;
         }
 
@@ -202,7 +213,7 @@
             event.preventDefault();
         });
 
-        setInterval(autoSubmit, 8000); // Check every 2 seconds
+        setInterval(autoSubmit, 5000); // Check every 2 seconds
     };
 
 
@@ -213,12 +224,12 @@
         <h1 class="title">Welcome to Customer Feedback</h1>
         <form id="feedback-form" action="/submit_feedback" method="post">
             <div class="input-container">
-                <label for="mobile_number">Mobile Number (10 digits)</label>
+                <h1 for="mobile_number">Mobile Number (10 digits)</h1>
                 <input type="text" id="mobile_number" name="mobile_number" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number" required autocomplete="off">
-                <p class="error-message" id="error-message"></p>
             </div>
+            <p class="error-message" id="error-message"></p>
             <div class="radio-group">
-                <h1>FOOD</h1>
+                <h1 >FOOD  </h1>
                 <label class="radio-label">
                     <input type="radio" class="radio-input" name="food" value="thumbs_up">
                     <img src="{{ url_for('static', filename='thumbs_up.png') }}" alt="Thumbs Up" >
