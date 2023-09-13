@@ -88,13 +88,29 @@ def view_feedback():
                         CLEANLINESS[1] = CLEANLINESS[1] + 1
               
                 labels = ["thumbs_up","thumbs_down"]
+
+                
+                # Calculate percentages for the pie chart
+                total_feedback_count = sum(food) + sum(CLEANLINESS) + sum(SERVICE)
+                thumbs_up_percentage = (food[0] + CLEANLINESS[0] + SERVICE[0]) / total_feedback_count * 100
+                thumbs_down_percentage = (food[1] + CLEANLINESS[1] + SERVICE[1]) / total_feedback_count * 100
+                
+                # Create pie chart data with percentages
+                pieData = {
+                    "labels": ["Thumbs Up", "Thumbs Down"],
+                    "datasets": [{
+                        "data": [thumbs_up_percentage, thumbs_down_percentage],
+                        "backgroundColor": ['#36A2EB', '#FF6384'],
+                    }],
+                }
  
                 return render_template(
                     template_name_or_list='view_feedback.html',
                     fooddata=food,
                     labels=labels,
                     cleaninessdata=CLEANLINESS,
-                    servicedata = SERVICE
+                    servicedata = SERVICE,
+                    pieData=pieData
                 )
     return render_template('password_prompt.html')
 
@@ -112,5 +128,5 @@ def download_csv():
         return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    # app.run(port=3000, debug=True)
-    app.run()
+    app.run(port=3000, debug=True)
+    # app.run()

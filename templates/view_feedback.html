@@ -5,125 +5,189 @@
     <title>View Feedback</title>
     <style>
         body {
-            text-align: center;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            margin-bottom: 50px;
-            background-color: #ffffff; 
-            font-size: 23px;
+            background-color: #f2f2f2;
+            font-family: 'Times New Roman';
         }
 
-        .new-line {
-            margin-top: 15px;
-            text-align: center /* Center the button horizontally */
-        }
-
-        .new-line button {
-            font-size: 18px; /* Increase the font size */
-            padding: 10px 100px; /* Adjust padding for height and width */
-        }
-        /* .chartContainer{
-            text-align: center;
-        }
-
-        canvas{
-            /* width: 80% !important; */
-            /* height: 700px !important; */
+        .container {
+            max-width: 1200px;
+            /* height: 2400px; */
             margin: 0 auto;
-        } */
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
+        .header {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            height: 500px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .download-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
     </style>
-    
-    
 </head>
 <body>
-    <h1>View Feedback</h1>
-    
-    <div style="height: 50vh; width: 50%;">
-        <canvas id="food"></canvas>
-    </div>
-
-    <div style="height: 50vh; width: 50%;">
-        <canvas id="cleaniness"></canvas>
-    </div>
-
-    <div style="height: 50vh; width: 50%;">
-        <canvas id="servies"></canvas>
-    </div>
-
-    <form action="/download_feedback_csv" method="get">
-        <div class="new-line">
-            <button type="submit">Download CSV</button>
+    <div class="container">
+        <div class="header">
+            Feedback Dashboard
         </div>
-    </form>
+    
+        <div class="chart-container">
+            <canvas id="foodChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="cleanlinessChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="serviceChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="pieChart"></canvas>
+        </div>
+
+        <div class="button-container">
+            <button class="download-button" onclick="downloadCSV()">Download CSV</button>
+        </div>
+    </div>
 
     <script>
-        const labels = {{ labels | tojson}};
+        const labels = {{ labels | tojson }};
     
-        const fooddata = {
+        // Define chart data objects
+        const foodData = {
             labels: labels,
             datasets: [{
                 label: "FOOD",
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
-                data: {{ fooddata | tojson}},
+                data: {{ fooddata | tojson }},
             }]
         };
 
-        const cleaninessdata = {
+        const cleanlinessData = {
             labels: labels,
             datasets: [{
-                label: "CLEANINESS",
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: {{ cleaninessdata | tojson}},
+                label: "CLEANLINESS",
+                backgroundColor: 'rgb(54, 162, 235)',
+                borderColor: 'rgb(54, 162, 235)',
+                data: {{ cleaninessdata | tojson }},
             }]
         };
 
-        const servicedata = {
+        const serviceData = {
             labels: labels,
             datasets: [{
-                label: "SEVICE",
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: {{ servicedata | tojson}},
+                label: "SERVICE",
+                backgroundColor: 'rgb(75, 192, 192)',
+                borderColor: 'rgb(75, 192, 192)',
+                data: {{ servicedata | tojson }},
             }]
         };
-    
-        const config = {
-            type: 'bar',
-            data: fooddata,
-            options: { maintainAspectRatio: false }
+
+        // Define chart configurations
+        const chartConfig = (data, id) => {
+            return {
+                type: 'bar',
+                data: data,
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: id.toUpperCase(), // Display chart title
+                            font: {
+                                size: 18
+                            }
+                        }
+                    }
+                }
+            };
         };
     
-        const food = new Chart(
-            document.getElementById('food'),
-            config
-        );
-        
-        const config1 = {
-            type: 'bar',
-            data: cleaninessdata,
-            options: { maintainAspectRatio: false }
-        };
-    
-        const cleaniness = new Chart(
-            document.getElementById('cleaniness'),
-            config1
-        );
-        
-        const config2 = {
-            type: 'bar',
-            data: servicedata,
-            options: { maintainAspectRatio: false }
-        };
-    
-        const servies = new Chart(
-            document.getElementById('servies'),
-            config2
+        const foodChart = new Chart(
+            document.getElementById('foodChart'),
+            chartConfig(foodData, 'food')
         );
 
+        const cleanlinessChart = new Chart(
+            document.getElementById('cleanlinessChart'),
+            chartConfig(cleanlinessData, 'cleanliness')
+        );
+
+        const serviceChart = new Chart(
+            document.getElementById('serviceChart'),
+            chartConfig(serviceData, 'service')
+        );
+
+        function renderPieChart() {
+            const pieData = {{ pieData | tojson }};
+            const pieChartCanvas = document.getElementById('pieChart').getContext('2d');
+
+            new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: pieData,
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Feedback Distribution'
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                var dataset = data.datasets[tooltipItem.datasetIndex];
+                                var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                    return previousValue + currentValue;
+                                });
+                                var currentValue = dataset.data[tooltipItem.index];
+                                var percentage = ((currentValue / total) * 100).toFixed(2) + '%';
+                                return data.labels[tooltipItem.index] + ': ' + percentage;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Call the function to render the pie chart
+        renderPieChart();
+
+        function downloadCSV() {
+            window.location.href = '/download_feedback_csv';
+        }
     </script>
 </body>
 </html>
