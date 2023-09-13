@@ -211,6 +211,7 @@
 
         form.addEventListener('submit', (event) => {
             event.preventDefault();
+            autoSubmit();
         });
 
         setInterval(autoSubmit, 5000); // Check every 2 seconds
@@ -265,7 +266,7 @@
             </div>
             
             <div class="submit-container">
-                <input type="submit" value="Submit Feedback">
+                <input type="submit" value="Submit Feedback" >
             </div>
         </form>
     </div>

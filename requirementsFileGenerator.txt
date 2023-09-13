@@ -1,1 +1,6 @@
 python -m pipreqs.pipreqs ./
+
+to publish website 
+
+pip install -r requirements.txt
+gunicorn app:app
